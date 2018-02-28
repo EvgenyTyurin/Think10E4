@@ -21,6 +21,22 @@ public class Think10E4 {
         return charMap;
     }
 
+    // Add one map of digit occurrences to another
+    private static HashMap<Character,Integer> mapsAdd(HashMap<Character,Integer> map1,
+            HashMap<Character,Integer> map2) {
+        // Put both maps to one
+        HashMap<Character,Integer> resultMap = new HashMap<>();
+        resultMap.putAll(map1);
+        resultMap.putAll(map2);
+        // Entries from map2 may erase values from map1 - we must save them
+        for (char letter : resultMap.keySet()) {
+            if (map1.containsKey(letter) && map2.containsKey(letter)) {
+                resultMap.put(letter, map1.get(letter) + resultMap.get(letter));
+            }
+        }
+        return  resultMap;
+    }
+
     // Run point
     public static void main(String[] args) {
         String userAnswer;
@@ -37,7 +53,7 @@ public class Think10E4 {
                 do {
                     System.out.print("Enter end number of vampire search  : ");
                     maxInt = con.nextInt();
-                } while (maxInt <= minInt);
+                } while (maxInt < minInt);
             } catch (Exception e) {
                 System.out.println("Input error!");
             }
@@ -54,9 +70,7 @@ public class Think10E4 {
                     if (sResult.length() != targetLength)
                         continue;
                     HashMap<Character, Integer> mapResult = getDigitMap(sResult);
-                    HashMap<Character, Integer> mapMulties = new HashMap<>();
-                    mapMulties.putAll(mapMult1);
-                    mapMulties.putAll(mapMult2);
+                    HashMap<Character, Integer> mapMulties = mapsAdd(mapMult1, mapMult2);
                     // Numbers of digits in multipliers and in result equal - vampire!
                     if (mapMulties.equals(mapResult))
                         System.out.println(sMult1 + " * " + sMult2 + " = " + sResult);
